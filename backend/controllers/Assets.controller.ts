@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { imageMiddleware } from "../middleware/multer.middleware";
+import { assetMiddleware } from "../middleware/multer.middleware";
 import { rename } from "fs";
 
 const prisma = new PrismaClient();
@@ -29,7 +29,7 @@ export function getOneAsset(req: Request, res: Response) {
 export function createAsset(req: Request, res: Response) {
   try {
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    assetMiddleware(req, res, (err) => {
       const { name } = req.body;
 
       if (err) {
@@ -55,7 +55,7 @@ export function createAsset(req: Request, res: Response) {
 export function updateAsset(req: Request, res: Response) {
   try {
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    assetMiddleware(req, res, (err) => {
       const { id, image, name } = req.body;
       if (err) {
         console.error(err);

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { imageMiddleware } from "../middleware/multer.middleware";
+import {resumeMiddleware } from "../middleware/multer.middleware";
 import { unlink } from "fs";
 
 const prisma = new PrismaClient();
@@ -29,7 +29,7 @@ export function getOneRequirement(req: Request, res: Response) {
 export function createRequirement(req: Request, res: Response) {
   try {
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    resumeMiddleware(req, res, (err) => {
       const { name, email, phone, apply, experience, interest1, interest2} = req.body;
 
       if (err) {

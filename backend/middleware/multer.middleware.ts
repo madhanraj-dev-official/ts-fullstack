@@ -6,6 +6,7 @@ const upload = join(rootDir, "storage", "upload");
 const images = join(upload, "images");
 const resume = join(upload, "resume");
 const assets = join(upload, "assets");
+const kids = join(upload, "kids");
 const imageStorage = multer.diskStorage({
   destination: images,
   filename: (req, file, cb) => {
@@ -28,7 +29,7 @@ const assetsStorage = multer.diskStorage({
   },
 });
 const TestimonialAssetsStorage = multer.diskStorage({
-  destination: assets,
+  destination: kids,
   filename: (req, file, cb) => {
     log(req.url);
     cb(null, file.fieldname + "-" + Date.now() + extname(file.originalname));

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { imageMiddleware } from "../middleware/multer.middleware";
+import { TestimonialAssetsMiddleware } from "../middleware/multer.middleware";
 import { unlink } from "fs";
 
 const prisma = new PrismaClient();
@@ -29,7 +29,7 @@ export function getOneKid(req: Request, res: Response) {
 export function createKid(req: Request, res: Response) {
   try {
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    TestimonialAssetsMiddleware(req, res, (err) => {
       const { testimonial } = req.body;
 
       if (err) {
@@ -54,7 +54,7 @@ export function createKid(req: Request, res: Response) {
 export function updateKid(req: Request, res: Response) {
   try {
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    TestimonialAssetsMiddleware(req, res, (err) => {
       const { id, image, testimonial } = req.body;
       if (err) {
         console.error(err);
