@@ -4,6 +4,7 @@ import admin from './views/admin';
 import api from './views/api';
 import bodyParser from 'body-parser';
 import cors from 'cors'
+import asset from './views/asset';
 // create express app
 const app = express();
 
@@ -12,6 +13,10 @@ app.use(cors())
 // body parser middleware
 app.use(bodyParser())
 app.use(urlencoded({extended:false}))
+
+
+app.use('/static',asset)
+
 // Serve API under `/api/v2/kalaimahal/sembanarkiol`
 app.use('/api/v2/kalaimahal/sembanarkiol',api)
 

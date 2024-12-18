@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { assetMiddleware } from "../middleware/multer.middleware";
-import { rename } from "fs";
+import { imageMiddleware } from "../middleware/multer.middleware";
+import { unlink } from "fs";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export function getALlAssets(req: Request, res: Response) {
     const result = async () => await prisma.asset.findMany();
     result().then((DATA) => res.json({ success: true, data: DATA }));
   } catch (e) {
-    res.status(500).json({ success: false, data: " Asset failed" });
+    res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
@@ -22,14 +22,15 @@ export function getOneAsset(req: Request, res: Response) {
       await prisma.asset.findUnique({ where: { id: parseInt(id) } });
     result().then((DATA) => res.json({ success: true, data: DATA }));
   } catch (e) {
-    res.status(500).json({ success: false, data: " Asset failed" });
+    res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-export function createAsset(req: Request, res: Response) {
+export function createAssets(req: Request, res: Response) {
   try {
+    let filePath = "";
     let fileName = "";
-    assetMiddleware(req, res, (err) => {
+    imageMiddleware(req, res, (err) => {
       const { name } = req.body;
 
       if (err) {
@@ -39,47 +40,59 @@ export function createAsset(req: Request, res: Response) {
       if (!req.file) {
         return res.status(400).json({ error: "Please send file" });
       }
-      fileName = req.file?.path;
+      filePath = req.file?.path;
+      filePath = req.file?.filename;
+      console.log(req.body.name)
       const result = async () =>
         await prisma.asset.create({
-          data: { image: fileName, name },
+          data: { name, image: fileName,path:filePath },
         });
       result().then((DATA) => res.json({ success: true, data: DATA }));
     });
   } catch (e) {
-    res.status(500).json({ success: false, data: " Kid failed" });
+    res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-
-export function updateAsset(req: Request, res: Response) {
+export function updateAssets(req: Request, res: Response) {
   try {
+    let filePath = "";
     let fileName = "";
-    assetMiddleware(req, res, (err) => {
-      const { id, image, name } = req.body;
+    imageMiddleware(req, res, (err) => {
+      const { id ,name,path,image } = req.body;
+
       if (err) {
         console.error(err);
         return res.status(500).json({ error: err });
       }
-      if (image) {
-        fileName = image;
-      }
-      if (!req.file) {
-        fileName = image;
-      } else {
-        fileName = req.file?.path;
-      }
-      rename(fileName,name,(err)=>{
-        console.log(err)
-      })
+      if (req.file) {
+        filePath = req.file?.path;
+        fileName = req.file?.filename;
+      }else{
+      filePath = path;
+      fileName = image;
+    }
       const result = async () =>
         await prisma.asset.update({
-          where: { id: parseInt(id) },
-          data: { image: name, name },
+          where:{id:parseInt(id)},
+          data: { name, image: fileName ,path: filePath},
         });
       result().then((DATA) => res.json({ success: true, data: DATA }));
     });
   } catch (e) {
-    res.status(500).json({ success: false, data: " Asset failed" });
+    res.status(500).json({ success: false, data: "class update failed" });
+  }
+}
+
+export function deleteAssets(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const result = async () =>
+      await prisma.asset.delete({ where: { id: parseInt(id) } });
+    result().then((DATA) =>{
+      unlink(DATA.path,(err)=>{console.log(err)})
+      res.json({ success: true, data: DATA })});
+  } catch (e) {
+    res.status(500).json({ success: false, data: "class update failed" });
   }
 }

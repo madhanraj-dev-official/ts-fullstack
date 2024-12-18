@@ -42,6 +42,7 @@ model branches {
   name        String
   description String
   image       String
+  path        String
 }
 
 model courses {
@@ -65,17 +66,20 @@ model requirement {
   experience String?
   interest1  String
   interest2  String
-  cover      String
+  pdf        String
+  path       String
 }
 
 model kids {
   id          Int     @id @default(autoincrement())
   image       String
+  path        String
   testimonial Boolean @default(false)
 }
 
 model asset {
   id    Int    @id @default(autoincrement())
   image String
+  path  String
   name  String
 }

@@ -28,6 +28,7 @@ export function getOneBranch(req: Request, res: Response) {
 
 export function createBranch(req: Request, res: Response) {
   try {
+    let filePath = "";
     let fileName = "";
     imageMiddleware(req, res, (err) => {
       const { name, description } = req.body;
@@ -39,11 +40,12 @@ export function createBranch(req: Request, res: Response) {
       if (!req.file) {
         return res.status(400).json({ error: "Please send file" });
       }
-      fileName = req.file?.path;
+      filePath = req.file?.path;
+      filePath = req.file?.filename;
       console.log(req.body.name)
       const result = async () =>
         await prisma.branches.create({
-          data: { name, description, image: fileName },
+          data: { name, description, image: fileName,path:filePath },
         });
       result().then((DATA) => res.json({ success: true, data: DATA }));
     });
@@ -54,22 +56,26 @@ export function createBranch(req: Request, res: Response) {
 
 export function updateBranch(req: Request, res: Response) {
   try {
+    let filePath = "";
     let fileName = "";
     imageMiddleware(req, res, (err) => {
-      const { id ,name, description } = req.body;
+      const { id ,name, description,path,image } = req.body;
 
       if (err) {
         console.error(err);
         return res.status(500).json({ error: err });
       }
-      if (!req.file) {
-        return res.status(400).json({ error: "Please send file" });
-      }
-      fileName = req.file?.path;
+      if (req.file) {
+        filePath = req.file?.path;
+        fileName = req.file?.filename;
+      }else{
+      filePath = path;
+      fileName = image;
+    }
       const result = async () =>
         await prisma.branches.update({
           where:{id:parseInt(id)},
-          data: { name, description, image: fileName },
+          data: { name, description, image: fileName ,path: filePath},
         });
       result().then((DATA) => res.json({ success: true, data: DATA }));
     });
@@ -84,7 +90,7 @@ export function deleteBranch(req: Request, res: Response) {
     const result = async () =>
       await prisma.branches.delete({ where: { id: parseInt(id) } });
     result().then((DATA) =>{
-      unlink(DATA.image,(err)=>{console.log(err)})
+      unlink(DATA.path,(err)=>{console.log(err)})
       res.json({ success: true, data: DATA })});
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });

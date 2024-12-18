@@ -28,6 +28,7 @@ export function getOneRequirement(req: Request, res: Response) {
 
 export function createRequirement(req: Request, res: Response) {
   try {
+    let filePath = "";
     let fileName = "";
     resumeMiddleware(req, res, (err) => {
       const { name, email, phone, apply, experience, interest1, interest2} = req.body;
@@ -39,10 +40,12 @@ export function createRequirement(req: Request, res: Response) {
       if (!req.file) {
         return res.status(400).json({ error: "Please send file" });
       }
-      fileName = req.file?.path;
+      filePath = req.file?.path;
+      fileName = req.file?.filename;
+      console.log(req.body.testimonial)
       const result = async () =>
         await prisma.requirement.create({
-          data: { name, email, phone, apply, experience, interest1, interest2, cover:fileName},
+          data: { name, email, phone, apply, experience, interest1, interest2, pdf:fileName,path:filePath},
         });
       result().then((DATA) => res.json({ success: true, data: DATA }));
     });
@@ -58,7 +61,7 @@ export function deleteRequirement(req: Request, res: Response) {
     const result = async () =>
       await prisma.requirement.delete({ where: { id: parseInt(id) } });
     result().then((DATA) =>{
-      unlink(DATA.cover,(err)=>{console.log(err)})
+      unlink(DATA.path,(err)=>{console.log(err)})
       res.json({ success: true, data: DATA })});
   } catch (e) {
     res.status(500).json({ success: false, data: " Requirement failed" });
