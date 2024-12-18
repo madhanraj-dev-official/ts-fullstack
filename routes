@@ -1,7 +1,0 @@
-touch Branch.controller.ts
-touch Class.controller.ts
-touch Course.controller.ts
-touch Event.controller.ts
-touch Requirement.controller.ts
-touch Staff.controller.ts
-touch Student.controller.ts

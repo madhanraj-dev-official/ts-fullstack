@@ -1,12 +1,13 @@
 import { Router } from 'express';
+import { createRequirement, deleteRequirement, getALlRequirement, getOneRequirement } from '../controllers/Requirement.controller';
 
 const requirement = Router()
 
-requirement.get('/',(req,res)=>{
-    console.log(req.url)
 
-    res.send("hello")
-})
 
+requirement.get('/',getALlRequirement)
+requirement.get('/:id',getOneRequirement)
+requirement.post('/',createRequirement)
+requirement.delete('/:id',deleteRequirement)
 
 export default requirement

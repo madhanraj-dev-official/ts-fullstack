@@ -16,7 +16,7 @@ datasource db {
 model Staff {
   id       Int     @id @default(autoincrement())
   name     String  @db.VarChar(50)
-  username String  @db.VarChar(50) @unique
+  username String  @unique @db.VarChar(50)
   password String  @db.VarChar(18)
   admin    Boolean
 }
@@ -41,6 +41,7 @@ model branches {
   id          Int    @id @default(autoincrement())
   name        String
   description String
+  image       String
 }
 
 model courses {
@@ -65,4 +66,16 @@ model requirement {
   interest1  String
   interest2  String
   cover      String
+}
+
+model kids {
+  id          Int     @id @default(autoincrement())
+  image       String
+  testimonial Boolean @default(false)
+}
+
+model asset {
+  id    Int    @id @default(autoincrement())
+  image String
+  name  String
 }

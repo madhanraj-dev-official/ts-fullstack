@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import client from './views/client';
 import admin from './views/admin';
 import api from './views/api';
@@ -11,7 +11,7 @@ const app = express();
 app.use(cors())
 // body parser middleware
 app.use(bodyParser())
-
+app.use(urlencoded({extended:false}))
 // Serve API under `/api/v2/kalaimahal/sembanarkiol`
 app.use('/api/v2/kalaimahal/sembanarkiol',api)
 
@@ -30,5 +30,5 @@ app.use((req, res) => {
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port \x1b[36mhttp://localhost:${PORT}`);
 });
