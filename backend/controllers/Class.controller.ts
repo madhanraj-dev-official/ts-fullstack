@@ -4,15 +4,19 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
 export function getALlClass(req: Request, res: Response) {
-    console.log(req.url);
+    try{console.log(req.url);
     const result = async () => await prisma.class.findMany();
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    result().then((DATA) => res.json({ success: true, data: DATA }));}catch (e) {
+        res.status(500).json({ success: false, data: "class update failed" });
+      }
 }
 
 export function createClass(req: Request, res: Response) {
-    const { className, section } = req.body;
+    try{const { className, section } = req.body;
     const result = async () =>await prisma.class.create({ data: { className, section } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    result().then((DATA) => res.json({ success: true, data: DATA }));}catch (e) {
+        res.status(500).json({ success: false, data: "class update failed" });
+      }
 }
 
 export function updateClass(req: Request, res: Response) {
@@ -30,8 +34,11 @@ export function updateClass(req: Request, res: Response) {
 }
 
 export function deleteClass(req: Request, res: Response) {
-    const { id } = req.params;
+    try{const { id } = req.params;
     const result = async () =>
         await prisma.class.delete({ where: { id: parseInt(id) } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    result().then((DATA) => res.json({ success: true, data: DATA }));}
+    catch (e) {
+        res.status(500).json({ success: false, data: "class update failed" });
+      }
 }
