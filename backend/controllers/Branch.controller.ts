@@ -40,6 +40,7 @@ export function createBranch(req: Request, res: Response) {
         return res.status(400).json({ error: "Please send file" });
       }
       fileName = req.file?.path;
+      console.log(req.body.name)
       const result = async () =>
         await prisma.branches.create({
           data: { name, description, image: fileName },

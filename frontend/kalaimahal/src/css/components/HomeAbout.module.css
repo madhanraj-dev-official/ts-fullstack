@@ -1,0 +1,22 @@
+.AboutCard{
+    background: rgba(255, 0, 221, 0.178);
+    /* background: rgb(82,0,89); */
+    background: linear-gradient(90deg, rgba(82,0,89,0.8113446062018558) 0%, rgba(121,9,119,0.8477591720281863) 39%, rgba(255,0,226,0.7189076314119398) 100%) !important; 
+
+
+    height: 40vh;
+    width: 70vw;
+    border-radius: 20px !important;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+
+}
+.FrontCard{
+    background: #ff0000;
+    border-radius: 20px;
+    height: 25vh ;
+    width: 20vw;
+    position: absolute;
+    
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+
+}

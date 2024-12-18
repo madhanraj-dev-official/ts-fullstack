@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Requirement_controller_1 = require("../controllers/Requirement.controller");
+const requirement = (0, express_1.Router)();
+requirement.get('/', Requirement_controller_1.getALlRequirement);
+requirement.get('/:id', Requirement_controller_1.getOneRequirement);
+requirement.post('/', Requirement_controller_1.createRequirement);
+requirement.delete('/:id', Requirement_controller_1.deleteRequirement);
+exports.default = requirement;

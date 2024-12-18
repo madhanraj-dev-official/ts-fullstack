@@ -1,0 +1,146 @@
+@import url(../colors.css);
+
+.header{
+    min-height: 100vh;
+    width: 100%;
+    
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
+.Home{
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../../assets/images/banner.png);
+}
+.About{
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../../assets/images/about.jpg);
+}
+.HeaderNav{
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 6%;
+    & a > img{
+        width: 250px;
+    }
+
+}
+.HeaderNavLink{
+    display: inline-flex;
+    /* padding: 2% 6%; */
+    & > a {
+        padding-left: 20px;
+        color:white;
+        font-weight: 600;
+        transition: all .5s;
+        display: inline-block;
+        
+        &::after{
+
+            content: "";
+            width: 0%;
+            height: 2px;
+            background-color: var(--hover-bg);
+            display: inline-block;
+            margin: auto;
+            transition: all .5s;
+            
+        }
+        &:hover{
+            color: var(--hover-bg);
+            &::after{
+            width: 100%;
+        }}
+       
+    }
+}
+.NavLinkActive{
+    color: var(--hover-bg);
+}
+nav a.active-link p{
+    color: #f00;  
+    background-color: #000;
+    /* Active link color (red) */
+  }
+.SubHeaderNavLink{
+    display: inline-flex;
+    /* padding: 2% 6%; */
+    & > a {
+        padding-left: 20px;
+        color:black;
+        font-weight: 600;
+        transition: all .5s;
+        display: inline-block;
+        
+        &::after{
+
+            content: "";
+            width: 0%;
+            height: 2px;
+            background-color: var(--hover-bg);
+            display: inline-block;
+            margin: auto;
+            transition: all .5s;
+            
+        }
+        &:hover{
+            color: var(--hover-bg);
+            &::after{
+            width: 100%;
+        }}
+       
+    }
+}
+.FooterNavLink{
+    display: inline-flex;
+    /* padding: 2% 6%; */
+    & > a {
+        color:white;
+        font-weight: 600;
+        transition: all .5s;
+        display: inline-block;
+        margin-bottom: 10px;
+        &:hover{
+            font-weight: 900;
+            color: var(--hover-bg);
+        }
+       
+    }
+}
+.HeaderText{
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > p:nth-child(1){
+        font-size: 62px;
+        font-weight: 900;
+    }
+    & > p:nth-child(2){
+        font-size: 16px;
+        margin: 40px 0 40px 20px ;
+        width: 60%;
+        text-align: center;
+    }
+}
+.HeaderButton{
+    padding: 20px 50px !important;
+    margin-top: 30px !important;
+}
+.HeaderDrawerMenu{
+    background-color: var(--hover-bg);
+    height: 100%;
+}
+@media(max-width:700px) {
+    .HeaderText > p:nth-child(1){
+        font-size: 20px;
+    }
+    .HeaderNav > a > img{
+        width: 100px;
+    }
+}

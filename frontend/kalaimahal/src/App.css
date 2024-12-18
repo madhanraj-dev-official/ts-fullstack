@@ -1,0 +1,13 @@
+.swiper-button-prev,
+.swiper-button-next{
+    color: black !important;
+}
+.slick-dots{
+    display: none !important;
+}
+
+.showSmallHeader{
+    position: sticky;
+    
+    display: flex !important;
+}

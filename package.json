@@ -6,11 +6,18 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon --exec ts-node backend/server.ts",
-    "build": "tsc",
+    "build:server": "tsc",
+    "build":"npm run client:build && npm run admin:build && npm run admin:update",
+    "client":"cd frontend/kalaimahal && npm run dev",
+    "admin":"cd frontend/AdminPanel && npm run dev",
+    "client:build":"cd frontend && rm -r client/* && cd kalaimahal && npm run build && cp -r dist/* ../client/",
+    "admin:build":"cd frontend && rm -r admin/* && cd AdminPanel && npm run build && cp -r dist/* ../admin/",
+    "admin:update":"",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "git":"git add . && git commit -m 'file update'"
   },
   "keywords": [],
   "author": "",
