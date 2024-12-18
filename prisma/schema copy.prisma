@@ -9,22 +9,22 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Staff {
   id       Int     @id @default(autoincrement())
-  name     String
-  username String  @unique
-  password String
+  name     String  @db.VarChar(50)
+  username String  @unique @db.VarChar(50)
+  password String  @db.VarChar(18)
   admin    Boolean
 }
 
 model Student {
   roll       Int    @id
   name       String
-  mark       String
+  mark       Json
   attendance Float
   class      Class  @relation(fields: [classId], references: [id])
   classId    Int
