@@ -90,7 +90,6 @@ export async function deleteBranch(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const result = await prisma.branches.delete({ where: { id: parseInt(id) } });
-    
       unlink(result.path,(err)=>{console.log(err)})
       res.json({ success: true, data: result })
   } catch (e) {

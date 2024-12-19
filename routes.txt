@@ -7,9 +7,6 @@ http://localhost:3535/api/v2/kalaimahal/sembanarkiol/requirement
 http://localhost:3535/api/v2/kalaimahal/sembanarkiol/branch
 -> all
 
-http://localhost:3535/api/v2/kalaimahal/sembanarkiol/class
--> crud
-
 http://localhost:3535/api/v2/kalaimahal/sembanarkiol/student
 -> all :classId/::roll
 

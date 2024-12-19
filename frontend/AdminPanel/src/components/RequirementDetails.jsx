@@ -9,25 +9,22 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import Popup from "reactjs-popup";
-import PopUpData from "./PopUpData";
 
 let rows = [];
 
 const columns = [
   { id: "sno", label: "Sno", minWidth: 10 },
-  { id: "className", label: "Class Name", minWidth: 10 },
+  { id: "name", label: "Name", minWidth: 10 },
+
+  { id: "email", label: "Email", minWidth: 40 },
+  { id: "phone", label: "Phone No", minWidth: 100 },
+  { id: "experience", label: "Experience", minWidth: 40 },
   {
-    id: "section",
-    label: "Section",
+    id: "apply",
+    label: "Apply",
     minWidth: 40,
     align: "center",
   },
-  { id: "roll", label: "Roll Number", minWidth: 40 },
-  { id: "name", label: "Student Name", minWidth: 100 },
-  { id: "attendance", label: "Attendance", minWidth: 40 },
-
   {
     id: "action",
     label: "Action",
@@ -36,12 +33,11 @@ const columns = [
   },
 ];
 
-export default function StudentMarkDetails() {
-  const navigate = useNavigate();
+export default function RequirementDetails() {
   let [data, setData] = React.useState([]);
   React.useEffect(() => {
     axios
-      .get(`/api/v2/kalaimahal/sembanarkiol/student/`)
+      .get(`/api/v2/kalaimahal/sembanarkiol/requirement/`)
       .then((d) => setData(d.data.data));
   }, []);
   rows = data;
@@ -59,31 +55,15 @@ export default function StudentMarkDetails() {
   };
   const readData = async () => {
     await axios
-      .get(`/api/v2/kalaimahal/sembanarkiol/student/`)
+      .get(`/api/v2/kalaimahal/sembanarkiol/requirement/`)
       .then((d) => setData(d.data.data));
   };
-
-  const createData = async (Data, Id) => {
-    console.log(Data);
-
-    await axios.post(
-      "/api/v2/kalaimahal/sembanarkiol/student",
-      { ...Data, ...{ mark: [] } }
-    );
-
-    await readData();
-  };
-
-  const updateData = async (Data, Id) => {
-    await axios.put(
-      `/api/v2/kalaimahal/sembanarkiol/student/${Id}`,
-      { ...{ ...Data, ...{ mark: "[]" }}, id: Id }
-    );
-    await readData();
-  };
+const download = async (pdf)=>{
+    await window.open(`/static/resume/${pdf}`, "_blank");
+}
   const deleteData = async (id) => {
     await axios.delete(
-      `/api/v2/kalaimahal/sembanarkiol/student/${id}`
+      `/api/v2/kalaimahal/sembanarkiol/requirement/${id}`
     );
     await readData();
   };
@@ -97,51 +77,6 @@ export default function StudentMarkDetails() {
       alignItems={"center"}
       height={"90vh"}
     >
-      <Button
-        variant="contained"
-        sx={{
-          position: "absolute",
-          bottom: "50px",
-          right: "50px",
-          backgroundColor: "#000",
-        }}
-        onClick={createData}
-      >
-        +
-      </Button>
-      <Popup
-        trigger={
-          <Button
-            variant="contained"
-            sx={{
-              position: "absolute",
-              bottom: "50px",
-              right: "50px",
-              backgroundColor: "#000",
-            }}
-            onClick={createData}
-          >
-            +
-          </Button>
-        }
-        modal
-        nested
-      >
-        {(close) => (
-          <PopUpData
-            close={close}
-            updateData={{
-              className: "",
-              section: "",
-              roll: "",
-              name: "",
-              attendance: "",
-            }}
-            index={-1}
-            update={createData}
-          />
-        )}
-      </Popup>
       <Paper sx={{ width: "90%" }}>
         <TableContainer sx={{ maxHeight: 740, borderRadius: "10px" }}>
           <Table stickyHeader aria-label="sticky table">
@@ -171,52 +106,27 @@ export default function StudentMarkDetails() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(
                     (
-                      { id, className, section, name, roll, attendance },
+                      { id, name, email, phone, experience,apply,pdf },
                       index
                     ) => {
                       return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={id}>
                           <TableCell>{index + 1}</TableCell>
-                          <TableCell>{className}</TableCell>
-                          <TableCell>{section}</TableCell>
-                          <TableCell>{roll}</TableCell>
                           <TableCell>{name}</TableCell>
-                          <TableCell>{attendance}</TableCell>
+                          <TableCell>{email}</TableCell>
+                          <TableCell>{phone}</TableCell>
+                          <TableCell>{experience}</TableCell>
+                          <TableCell>{apply}</TableCell>
                           <TableCell align={"center"}>
                             <Button
                             sx={{margin:"10px"}}
                               variant="contained"
                               color={"success"}
-                              onClick={() => {
-                                navigate(`${id}`);
-                              }}
+                              onClick={()=>download(pdf)}
                             >
-                              Open
+                              Download
                             </Button>
                             <span> </span>
-                            <Popup
-                              trigger={
-                                <Button
-                                sx={{margin:"10px"}} variant="contained">Edit</Button>
-                              }
-                              modal
-                              nested
-                            >
-                              {(close) => (
-                                <PopUpData
-                                  close={close}
-                                  updateData={{
-                                    className,
-                                    section,
-                                    roll,
-                                    name,
-                                    attendance,
-                                  }}
-                                  index={id}
-                                  update={updateData}
-                                />
-                              )}
-                            </Popup>
                             <span> </span>
                             <Button
                             sx={{margin:"10px"}}

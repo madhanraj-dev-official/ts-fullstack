@@ -9,10 +9,10 @@ const asset = Router()
 const assetLocation = join(rootDir,"storage","upload")
 
 //assets
-const staticAsset = join(assetLocation,"assets","assets")
-const imageAsset = join(assetLocation,"assets","images")
-const kidAsset = join(assetLocation,"assets","kids")
-const resumeAsset = join(assetLocation,"assets","resume")
+const staticAsset = join(assetLocation,"assets")
+const imageAsset = join(assetLocation,"images")
+const kidAsset = join(assetLocation,"kids")
+const resumeAsset = join(assetLocation,"resume")
 
 // Static Assets
 asset.use('/asset',express.static(staticAsset))
@@ -24,6 +24,9 @@ asset.use('/image',express.static(imageAsset))
 asset.use('/kids',express.static(kidAsset))
 
 // Resume Assets
-asset.use('/resume',express.static(resumeAsset))
+asset.use('/resume/:pdf',(req,res)=>{
+
+    res.download(join(resumeAsset,req.params.pdf))
+})
 
 export default asset

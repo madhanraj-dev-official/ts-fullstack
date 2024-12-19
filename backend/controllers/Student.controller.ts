@@ -26,7 +26,9 @@ export async function getOneStudent(req: Request, res: Response) {
     const result = await prisma.student.findUnique({
       where: { id: parseInt(id) },
     });
-    res.json({ success: true, data: result });
+    let result1 = await JSON.parse(`${result?.mark}`)
+    console.log(result1)
+    res.json({ success: true, data: {...result,...{mark:result1}} });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
@@ -49,11 +51,12 @@ export async function createStudent(req: Request, res: Response) {
 
     if (!result1 && check) {
       try {
+        let mark1 = await JSON.stringify(mark)
         const result = await prisma.student.create({
           data: {
             roll: parseInt(roll),
             name: name,
-            mark: mark,
+            mark: mark1,
             attendance: parseFloat(attendance),
             className,
             section,
@@ -84,12 +87,13 @@ export async function updateStudent(req: Request, res: Response) {
     });
     if (check) {
       try {
+        let mark1 = await JSON.stringify(mark)
         const result = await prisma.student.update({
           where: { id: parseInt(id) },
           data: {
             roll: parseInt(id),
             name: name,
-            mark: mark,
+            mark: mark1,
             attendance: parseFloat(attendance),
             section,
             className,

@@ -40,13 +40,13 @@ const studentDetail = {
 };
 const { marks } = studentDetail;
 
-export default function StudentMarkSlugDetails() {
+export default  function StudentMarkSlugDetails() {
   let [data, setData] = React.useState({});
-  const { id, classId } = useParams();
+  const { id, } = useParams();
   React.useEffect(() => {
     axios
       .get(
-        `/api/v2/kalaimahal/sembanarkiol/student/${classId}/${id}`,
+        `/api/v2/kalaimahal/sembanarkiol/student/${id}`,
       )
       .then((d) => setData(d.data.data));
     rows = { ...data };
@@ -54,9 +54,11 @@ export default function StudentMarkSlugDetails() {
   rows = { ...data };
   let { mark } = rows;
   let Mark = [];
+
   if (mark != null) {
-    Mark = [...mark];
+    Mark=mark
   }
+  // console.log(JSON.parse(Mark))
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -71,37 +73,41 @@ export default function StudentMarkSlugDetails() {
   const readData = async () => {
     await axios
       .get(
-        `/api/v2/kalaimahal/sembanarkiol/student/${classId}/${id}`,
+        `/api/v2/kalaimahal/sembanarkiol/student/${id}`,
       )
       .then((d) => setData(d.data.data));
     let rows = { ...data };
     let { mark } = rows;
     if (mark != null) {
-      Mark = await [...mark];
+      Mark =  [mark];
     }
-
-    console.log(Mark);
   };
-
+console.log(mark)
   const createData = async (Data, Id) => {
-    let newData = {...data}
+    let newData = {...rows}
     newData.mark.push(Data)
     await axios.put(
-      `/api/v2/kalaimahal/sembanarkiol/student/${rows.roll}`,
+      `/api/v2/kalaimahal/sembanarkiol/student/${id}`,
       newData,
     );
     await readData();
   };
 
-  const updateData = async (data, id) => {
-    console.log(data, id);
+  const updateData = async (Data, Id) => {
+    console.log(Data, Id);
+    let newData = {...rows}
+    newData.mark[Id]=Data
+    await axios.put(
+      `/api/v2/kalaimahal/sembanarkiol/student/${id}`,
+      newData,
+    );
     readData();
   };
   const deleteData = async (Id) => {
     let newData = {...data}
     newData.mark.splice(Id,1)
     await axios.put(
-      `/api/v2/kalaimahal/sembanarkiol/student/${rows.roll}`,
+      `/api/v2/kalaimahal/sembanarkiol/student/${id}`,
       newData,
     );
     await readData();
@@ -173,7 +179,7 @@ export default function StudentMarkSlugDetails() {
             </TableHead>
             <TableBody>
               {
-                //false?<TableRow ><TableCell colSpan={studentDetail.marks.length}><Typography textAlign={"center"}>no data</Typography></TableCell></TableRow>:
+                Mark.length==0?<TableRow ><TableCell colSpan={studentDetail.marks.length}><Typography textAlign={"center"}>no data</Typography></TableCell></TableRow>:
                 // mark.map((m,index)=><TableCell key={index}>hai</TableCell>)
                 Mark.map(({ subjectName, internal, external, result }, index) => (
                   <TableRow key={index}>
