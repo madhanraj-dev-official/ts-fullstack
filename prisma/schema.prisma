@@ -22,19 +22,13 @@ model Staff {
 }
 
 model Student {
-  roll       Int    @id
+  id         Int    @id @default(autoincrement())
+  roll       Int    @unique
   name       String
   mark       String
   attendance Float
-  class      Class  @relation(fields: [classId], references: [id])
-  classId    Int
-}
-
-model Class {
-  id        Int       @id @default(autoincrement())
-  className String
-  section   String
-  students  Student[]
+  className  String
+  section    String
 }
 
 model branches {

@@ -9,17 +9,11 @@ CREATE TABLE "Staff" (
 
 -- CreateTable
 CREATE TABLE "Student" (
-    "roll" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "roll" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "mark" TEXT NOT NULL,
     "attendance" REAL NOT NULL,
-    "classId" INTEGER NOT NULL,
-    CONSTRAINT "Student_classId_fkey" FOREIGN KEY ("classId") REFERENCES "Class" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "Class" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "className" TEXT NOT NULL,
     "section" TEXT NOT NULL
 );
@@ -29,7 +23,8 @@ CREATE TABLE "branches" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "image" TEXT NOT NULL
+    "image" TEXT NOT NULL,
+    "path" TEXT NOT NULL
 );
 
 -- CreateTable
@@ -56,13 +51,15 @@ CREATE TABLE "requirement" (
     "experience" TEXT,
     "interest1" TEXT NOT NULL,
     "interest2" TEXT NOT NULL,
-    "cover" TEXT NOT NULL
+    "pdf" TEXT NOT NULL,
+    "path" TEXT NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "kids" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "image" TEXT NOT NULL,
+    "path" TEXT NOT NULL,
     "testimonial" BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -70,8 +67,12 @@ CREATE TABLE "kids" (
 CREATE TABLE "asset" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "image" TEXT NOT NULL,
+    "path" TEXT NOT NULL,
     "name" TEXT NOT NULL
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Staff_username_key" ON "Staff"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Student_roll_key" ON "Student"("roll");

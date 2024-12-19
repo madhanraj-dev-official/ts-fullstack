@@ -1,30 +1,18 @@
-import { Request, Response, Router } from 'express';
-import { createStaff, getALlStaff } from "../controllers/Staff.controller";
+import { Router } from 'express';
+import { createStaff, deleteStaff, getALlStaff, getOneStaff, updateStaff } from "../controllers/Staff.controller";
 
 
 const staff = Router()
 
 staff.get('/',getALlStaff)
 
-staff.get('/:id',(req:Request,res:Response)=>{
-        console.log(req.url)
-
-    res.send("hello")
-})
+staff.get('/:id',getOneStaff)
 
 staff.post('/',createStaff)
 
-staff.put('/',(req:Request,res:Response)=>{
-        console.log(req.url)
+staff.put('/:id',updateStaff)
 
-    res.send("hello")
-})
-
-staff.delete('/',(req:Request,res:Response)=>{
-        console.log(req.url)
-
-    res.send("hello")
-})
+staff.delete('/:id',deleteStaff)
 
 
 

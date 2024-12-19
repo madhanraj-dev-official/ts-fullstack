@@ -3,11 +3,11 @@ import { createStudent, deleteStudent, getALlStudent, getOneStudent, updateStude
 
 const student = Router()
 
-student.get('/:classId',getALlStudent)
-student.get('/:classId/:roll',getOneStudent)
+student.get('/',getALlStudent)
+student.get('/:id',getOneStudent)
 student.post('/',createStudent)
-student.put('/:roll',updateStudent)
-student.delete("/:roll",deleteStudent)
+student.put('/:id',updateStudent)
+student.delete("/:id",deleteStudent)
 
 
 

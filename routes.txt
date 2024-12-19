@@ -1,0 +1,27 @@
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/staff
+-> c ga g u
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/requirement
+-> ga g c d
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/branch
+-> all
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/class
+-> crud
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/student
+-> all :classId/::roll
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/course
+->all
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/event
+->crud
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/upload
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/kids
+-> all
+
+http://localhost:3535/api/v2/kalaimahal/sembanarkiol/assets
+-> g ga u c

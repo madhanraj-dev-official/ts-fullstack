@@ -1,61 +1,66 @@
 import { PrismaClient } from "@prisma/client";
+import { hash } from "bcrypt";
 import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-export function getALlStaff(req: Request, res: Response) {
+export async function getALlStaff(req: Request, res: Response) {
   try {
     console.log(req.url);
-    const result = async () => await prisma.staff.findMany();
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const result = await prisma.staff.findMany();
+    res.json({ success: true, data: result });
   } catch (e) {
-    res.status(500).json({ success: false, data: "class update failed" });
+    res.status(400).json({ success: false, data: "staff get all failed" });
   }
 }
 
-export function getOneStaff(req: Request, res: Response) {
+export async function getOneStaff(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const result = async () =>
-      await prisma.staff.findUnique({ where: { id: parseInt(id) } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const result = await prisma.staff.findUnique({
+      where: { id: parseInt(id) },
+    });
+    res.json({ success: true, data: result });
   } catch (e) {
-    res.status(500).json({ success: false, data: "class update failed" });
+    res.status(400).json({ success: false, data: "staff get one failed" });
   }
 }
 
-export function createStaff(req: Request, res: Response) {
+export async function createStaff(req: Request, res: Response) {
   try {
     const { name, username, password, admin } = req.body;
-    const result = async () =>
-      await prisma.staff.create({ data: { name, username, password, admin } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const hashData = await hash(password, 10);
+    const result = await prisma.staff.create({
+      data: { name, username, password: hashData, admin },
+    });
+    res.json({ success: true, data: result });
   } catch (e) {
-    res.status(500).json({ success: false, data: "class update failed" });
+    res.status(400).json({ success: false, data: "staff create failed" });
   }
 }
 
-export function updateStaff(req: Request, res: Response) {
+export async function updateStaff(req: Request, res: Response) {
+  const {id} = req.params
   try {
-    const { id, name, username, password, admin } = req.body;
-    const result = async () =>
-      await prisma.staff.update({
-        where: { id: parseInt(id) },
-        data: { id, name, username, password, admin },
-      });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const { name, username, password, admin } = req.body;
+    const hashData = await hash(password, 10);
+
+    const result = await prisma.staff.update({
+      where: { id: parseInt(id) },
+      data: { name, username, password: hashData, admin },
+    });
+    res.json({ success: true, data: result });
   } catch (error) {
-    res.status(500).json({ success: false, data: "class update failed" });
+    res.status(400).json({ success: false, data: "staff update failed" });
   }
 }
 
-export function deleteStaff(req: Request, res: Response) {
+export async function deleteStaff(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const result = async () =>
-      await prisma.staff.delete({ where: { id: parseInt(id) } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const result = await prisma.staff.delete({ where: { id: parseInt(id) } });
+    res.json({ success: true, data: result });
   } catch (e) {
-    res.status(500).json({ success: false, data: "class update failed" });
+    res.status(400).json({ success: false, data: "staff delete failed" });
   }
 }

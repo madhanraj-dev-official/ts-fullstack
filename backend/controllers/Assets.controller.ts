@@ -5,32 +5,33 @@ import { unlink } from "fs";
 
 const prisma = new PrismaClient();
 
-export function getALlAssets(req: Request, res: Response) {
+export async function getALlAssets(req: Request, res: Response) {
   try {
     console.log(req.url);
-    const result = async () => await prisma.asset.findMany();
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const result = await prisma.asset.findMany();
+    res.json({ success: true, data: result });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-export function getOneAsset(req: Request, res: Response) {
+export async function getOneAsset(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const result = async () =>
-      await prisma.asset.findUnique({ where: { id: parseInt(id) } });
-    result().then((DATA) => res.json({ success: true, data: DATA }));
+    const result = await prisma.asset.findUnique({
+      where: { id: parseInt(id) },
+    });
+    res.json({ success: true, data: result });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-export function createAssets(req: Request, res: Response) {
+export async function createAsset(req: Request, res: Response) {
   try {
     let filePath = "";
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
+    imageMiddleware(req, res, async (err) => {
       const { name } = req.body;
 
       if (err) {
@@ -42,24 +43,23 @@ export function createAssets(req: Request, res: Response) {
       }
       filePath = req.file?.path;
       filePath = req.file?.filename;
-      console.log(req.body.name)
-      const result = async () =>
-        await prisma.asset.create({
-          data: { name, image: fileName,path:filePath },
-        });
-      result().then((DATA) => res.json({ success: true, data: DATA }));
+      console.log(req.body.name);
+      const result = await prisma.asset.create({
+        data: { name, image: fileName, path: filePath },
+      });
+      res.json({ success: true, data: result });
     });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-export function updateAssets(req: Request, res: Response) {
+export async function updateAsset(req: Request, res: Response) {
   try {
     let filePath = "";
     let fileName = "";
-    imageMiddleware(req, res, (err) => {
-      const { id ,name,path,image } = req.body;
+    imageMiddleware(req, res, async (err) => {
+      const { id, name, path, image } = req.body;
 
       if (err) {
         console.error(err);
@@ -68,30 +68,30 @@ export function updateAssets(req: Request, res: Response) {
       if (req.file) {
         filePath = req.file?.path;
         fileName = req.file?.filename;
-      }else{
-      filePath = path;
-      fileName = image;
-    }
-      const result = async () =>
-        await prisma.asset.update({
-          where:{id:parseInt(id)},
-          data: { name, image: fileName ,path: filePath},
-        });
-      result().then((DATA) => res.json({ success: true, data: DATA }));
+      } else {
+        filePath = path;
+        fileName = image;
+      }
+      const result = await prisma.asset.update({
+        where: { id: parseInt(id) },
+        data: { name, image: fileName, path: filePath },
+      });
+      res.json({ success: true, data: result });
     });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
 }
 
-export function deleteAssets(req: Request, res: Response) {
+export async function deleteAsset(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const result = async () =>
-      await prisma.asset.delete({ where: { id: parseInt(id) } });
-    result().then((DATA) =>{
-      unlink(DATA.path,(err)=>{console.log(err)})
-      res.json({ success: true, data: DATA })});
+    const result = await prisma.asset.delete({ where: { id: parseInt(id) } });
+
+    unlink(result.path, (err) => {
+      console.log(err);
+    });
+    res.json({ success: true, data: result });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
   }
