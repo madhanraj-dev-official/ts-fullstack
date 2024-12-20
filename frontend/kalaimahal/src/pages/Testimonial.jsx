@@ -1,43 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Card, CardMedia } from "@mui/material";
 import { CampusCard } from "../css/components/HomeOurCampus.module.css";
 import BigToSmallHeader from "../components/BigToSmallHeader";
 import Bg from "../assets/images/background.jpg"
 import { TitleHook } from "../CustomHook/TitleHook";
+import axios from "axios";
 
 function Testimonial() {
   TitleHook("Testimonial")
-  const Branches = [
-    {
-      title: "classrooms",
-      image:
-        "https://www.teachhub.com/wp-content/uploads/2020/05/Classroom-Management-for-an-Effective-Learning-Environment-768x512.jpg",
-    },
-    {
-      title: "libraries",
-      image:
-        "https://www.reganagency.com/wp-content/uploads/2023/10/Library-Management-1024x683.jpg",
-    },
-    {
-      title: "laboratories",
-      image:
-        "https://evolveltd.eu/app/uploads/2020/01/255376950_439497967739323_1355680417886447892_n-1.jpg",
-    },
-    {
-      title: "sports",
-      image: "https://shikshaabhiyan.co.in/wp-content/uploads/2024/03/1.jpg",
-    },
-    {
-      title: "medical room",
-      image:
-        "https://tws.edu.in/wp-content/uploads/2015/11/TWS_infrastructure_infirmaryImage02.jpg",
-    },
-    {
-      title: "computer labs",
-      image:
-        "https://5.imimg.com/data5/DJ/PV/GLADMIN-64970456/computer-lab-class.png",
-    },
-  ];
+  let [data ,setData]=useState([])
+  useEffect(
+    ()=>{
+      axios.get("/api/v2/kalaimahal/sembanarkiol/kids?kid=false").then((d)=>setData(d.data.data))
+    },[1]
+  )
+  let testimonial = [...data]
 
   return (
     <div>
@@ -48,20 +25,20 @@ function Testimonial() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {Branches.map(({ title, image },index) => (
+        {testimonial.map(({ name, image },index) => (
           <Card
           key={index}
             className={CampusCard}
             sx={{ height: "600px", margin: "40px", maxWidth: "400px" }}
           >
-            <CardMedia
-              component="img"
-              title={title}
-              alt="green iguana"
-              height="100%"
-              image={image}
-              sx={{ objectFit: "fill" }}
-            />
+                <CardMedia
+                  component="img"
+                  title={name}
+                  alt={name}
+                  height="100%"
+                  image={`/static/kids/${image}`}
+                  sx={{objectFit:"fill"}}
+                />
           </Card>
         ))}
       </Box>

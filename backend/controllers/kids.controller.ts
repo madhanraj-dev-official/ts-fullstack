@@ -1,14 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { imageMiddleware } from "../middleware/multer.middleware";
+import { TestimonialAssetsMiddleware } from "../middleware/multer.middleware";
 import { unlink } from "fs";
 
-const prisma = new PrismaClient();
 
+const prisma = new PrismaClient();
+const stringToBool = (str:string) => str.toLowerCase() === 'true';
 export async function getALlKids(req: Request, res: Response) {
+  const {kid} = req.query
   try {
     console.log(req.url);
-    const result =  await prisma.kids.findMany();
+    const result =  await prisma.kids.findMany({where:{testimonial:stringToBool(`${kid}`)}});
     res.json({ success: true, data: result });
   } catch (e) {
     res.status(500).json({ success: false, data: "class update failed" });
@@ -30,8 +32,8 @@ export async function createKid(req: Request, res: Response) {
   try {
     let filePath = "";
     let fileName = "";
-    imageMiddleware(req, res, async (err) => {
-      const { testimonial } = req.body;
+    TestimonialAssetsMiddleware(req, res, async (err) => {
+      const { testimonial,name } = req.body;
 
       if (err) {
         console.error(err);
@@ -44,7 +46,7 @@ export async function createKid(req: Request, res: Response) {
       fileName = req.file?.filename;
       console.log(req.body.testimonial)
       const result = await prisma.kids.create({
-          data: { testimonial, image: fileName,path:filePath },
+          data: { testimonial:stringToBool(testimonial), image: fileName,path:filePath ,name},
         });
         res.json({ success: true, data: result });
 
@@ -55,11 +57,12 @@ export async function createKid(req: Request, res: Response) {
 }
 
 export async function updateKid(req: Request, res: Response) {
+  const {id} = req.params
   try {
     let filePath = "";
     let fileName = "";
-    imageMiddleware(req, res, async (err) => {
-      const { id ,testimonial,path,image } = req.body;
+    TestimonialAssetsMiddleware(req, res, async (err) => {
+      const { testimonial,path,image ,name} = req.body;
 
       if (err) {
         console.error(err);
@@ -74,7 +77,7 @@ export async function updateKid(req: Request, res: Response) {
     }
       const result = await prisma.kids.update({
           where:{id:parseInt(id)},
-          data: { testimonial, image: fileName ,path: filePath},
+          data: { testimonial:stringToBool(testimonial), image: fileName ,path: filePath,name},
         });
         res.json({ success: true, data: result });
 

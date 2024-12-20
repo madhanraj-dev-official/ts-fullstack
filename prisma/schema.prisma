@@ -66,6 +66,7 @@ model requirement {
 
 model kids {
   id          Int     @id @default(autoincrement())
+  name        String
   image       String
   path        String
   testimonial Boolean @default(false)

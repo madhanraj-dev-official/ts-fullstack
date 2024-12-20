@@ -4,46 +4,20 @@ import { CampusCard } from "../css/components/HomeOurCampus.module.css";
 import { TitleHook } from "../CustomHook/TitleHook";
 import BigToSmallHeader from "../components/BigToSmallHeader";
 import Bg from "../assets/images/banner.png"
-
+import { useEffect, useState } from "react";
+import axios from 'axios'
 function Acadimics() {
   TitleHook("Acadimics")
-  const Branches = [
-    {
-      title: "classrooms",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image:
-        "https://www.teachhub.com/wp-content/uploads/2020/05/Classroom-Management-for-an-Effective-Learning-Environment-768x512.jpg",
-    },
-    {
-      title: "libraries",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image:
-        "https://www.reganagency.com/wp-content/uploads/2023/10/Library-Management-1024x683.jpg",
-    },
-    {
-      title: "laboratories",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image:
-        "https://evolveltd.eu/app/uploads/2020/01/255376950_439497967739323_1355680417886447892_n-1.jpg",
-    },
-    {
-      title: "sports",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image: "https://shikshaabhiyan.co.in/wp-content/uploads/2024/03/1.jpg",
-    },
-    {
-      title: "medical room",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image:
-        "https://tws.edu.in/wp-content/uploads/2015/11/TWS_infrastructure_infirmaryImage02.jpg",
-    },
-    {
-      title: "computer labs",
-      content:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. ",
-      image:
-        "https://5.imimg.com/data5/DJ/PV/GLADMIN-64970456/computer-lab-class.png",
-    },
-  ];
+
+  let [data ,setData]=useState([])
+  useEffect(
+    ()=>{
+      axios.get("/api/v2/kalaimahal/sembanarkiol/branch").then((d)=>setData(d.data.data))
+    },[1]
+  )
+  let Branches = [...data]
+  console.log(Branches);
+
   return (
     <div>
     <BigToSmallHeader backgroundImg={Bg} isAcitve={"/acadimics"} MainContent={"shvcvsc dkkvwhvc dwhvckhdvc"} SubContent={"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus amet recusandae magnam et ipsa provident saepe tempora esse"}/>
@@ -53,7 +27,7 @@ function Acadimics() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {Branches.map(({ title,content, image },index) => (
+        {Branches.map(({ name,description, image },index) => (
           <Card
             key={index}
             className={CampusCard}
@@ -61,15 +35,15 @@ function Acadimics() {
           >
             <CardMedia
               component="img"
-              title={title}
-              alt={title}
+              title={name}
+              alt={name}
               height="70%"
-              src={image}
+              src={`/static/image/${image}`}
               sx={{ objectFit: "fill" }}
             />
             <CardContent>
-              <Typography variant="h6" fontWeight={800} textAlign={"center"}>{title}</Typography>
-              <Typography padding={"10px"} textAlign={"center"}>{content}</Typography>
+              <Typography variant="h6" fontWeight={800} textAlign={"center"}>{name}</Typography>
+              <Typography padding={"10px"} textAlign={"center"}>{description}</Typography>
             </CardContent>
           </Card>
         ))}

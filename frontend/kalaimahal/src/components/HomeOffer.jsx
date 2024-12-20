@@ -1,30 +1,16 @@
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import React from "react";
 import { Offer, OfferCard } from "../css/components/HomeOffer.module.css";
+import { useEffect, useState } from "react";
+import axios from 'axios'
+
 function HomeOffer() {
-  const Course = [
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "11-12",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "11-12",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-  ];
-  console.log(Course);
+  let [data ,setData]=useState([])
+  useEffect(
+    ()=>{
+      axios.get("/api/v2/kalaimahal/sembanarkiol/course").then((d)=>setData(d.data.data))
+    },[1]
+  )
+  let Course = [...data]
   return (
     <>
       <Box className={Offer} component={"section"}>
@@ -41,7 +27,7 @@ function HomeOffer() {
           justifyContent={"space-around"}
           alignItems={"center"}
         >
-          {Course.map(({ title, content },index) => (
+          {Course.map(({ name, description },index) => (
             <Card className={OfferCard} key={index}>
               <CardContent>
                 <Box
@@ -53,8 +39,8 @@ function HomeOffer() {
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Typography variant="h3">{title}</Typography>
-                  <Typography textAlign={"justify"}>{content}</Typography>
+                  <Typography variant="h3">{name}</Typography>
+                  <Typography textAlign={"justify"}>{description}</Typography>
                 </Box>
               </CardContent>
             </Card>

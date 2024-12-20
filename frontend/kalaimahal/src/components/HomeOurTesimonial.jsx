@@ -11,37 +11,18 @@ import {
   Compus,
   SwipperModule,
 } from "../css/components/HomeOurCampus.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 export default function HomeOurTestimonial() {
   const isTablet = useMediaQuery({ query: "(max-width: 1700px)" });
   const isMobile = useMediaQuery({ query: "(max-width: 900px)" });
-
-  const Branches = [
-    {
-      title: "classrooms",
-      image:"https://www.teachhub.com/wp-content/uploads/2020/05/Classroom-Management-for-an-Effective-Learning-Environment-768x512.jpg"
-    },
-    {
-      title: "libraries",
-      image:"https://www.reganagency.com/wp-content/uploads/2023/10/Library-Management-1024x683.jpg"
-
-    },
-    {
-      title: "laboratories",
-      image:"https://evolveltd.eu/app/uploads/2020/01/255376950_439497967739323_1355680417886447892_n-1.jpg"
-    },
-    {
-      title: "sports",
-      image:"https://shikshaabhiyan.co.in/wp-content/uploads/2024/03/1.jpg"
-    },
-    {
-      title: "medical room",
-      image:"https://tws.edu.in/wp-content/uploads/2015/11/TWS_infrastructure_infirmaryImage02.jpg"
-    },
-    {
-      title: "computer labs",
-      image:"https://5.imimg.com/data5/DJ/PV/GLADMIN-64970456/computer-lab-class.png"
-    },
-  ];
+  let [data ,setData]=useState([])
+  useEffect(
+    ()=>{
+      axios.get("/api/v2/kalaimahal/sembanarkiol/kids?kid=false").then((d)=>setData(d.data.data))
+    },[1]
+  )
+  let testimonial = [...data]
   return (
     <Box className={Compus}>
       <Typography variant="h3" marginBottom={"50px"}>
@@ -68,7 +49,7 @@ export default function HomeOurTestimonial() {
           onSwiper={(swiper) => console.log(swiper)}
           onSlideChange={() => console.log("slide change")}
         >
-          {Branches.map(({ title , image },index) => (
+          {testimonial.map(({ name , image },index) => (
             <SwiperSlide key={index}>
               <Card
                 className={CampusCard}
@@ -76,10 +57,10 @@ export default function HomeOurTestimonial() {
               >
                 <CardMedia
                   component="img"
-                  title={title}
-                  alt="green iguana"
+                  title={name}
+                  alt={name}
                   height="100%"
-                  image={image}
+                  image={`/static/kids/${image}`}
                   sx={{objectFit:"fill"}}
                 />
               </Card>

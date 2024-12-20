@@ -13,87 +13,20 @@ import "swiper/css/navigation";
 // import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { CampusCard, Compus,SwipperModule } from "../css/components/HomeOurCampus.module.css";
+import { useEffect, useState } from "react";
+import axios from 'axios'
 function HomeOurCampus() {
   const isTablet = useMediaQuery({ query: '(max-width: 1700px)' })
   const isMobile = useMediaQuery({ query: '(max-width: 1000px)' })
+  let [data ,setData]=useState([])
+  useEffect(
+    ()=>{
+      axios.get("/api/v2/kalaimahal/sembanarkiol/branch").then((d)=>setData(d.data.data))
+    },[1]
+  )
+  let Branches = [...data]
+  console.log(Branches);
 
-  const Branches = [
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "Kids",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "1-10",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-    {
-      title: "11-12",
-      content:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam reiciendis tempore dicta molestiae repellat vero qui aut numquam magni architecto officiis nulla, it",
-    },
-  ];
   return (
     <Box className={Compus}>
       <Typography variant="h3" marginBottom={"50px"}>
@@ -123,7 +56,7 @@ function HomeOurCampus() {
           onSwiper={(swiper) => console.log(swiper)}
           onSlideChange={() => console.log("slide change")}
         >
-          {Branches.map(({ title, content },index) => (
+          {Branches.map(({ name, description,image },index) => (
             <SwiperSlide key={index}>
               <Card className={CampusCard} sx={{height:isMobile?"400px":"600px"}}>
       <CardMedia
@@ -131,7 +64,7 @@ function HomeOurCampus() {
         alt="green iguana"
         height={isMobile?"70%":"60%"}
         sx={{objectFit:"fill"}}
-        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ7tuDf0508fgs6xVgaAv2VYMCU485QXttyQ&s"
+        image={`/static/image/${image}`}
       />
                 <CardContent>
                   <Box
@@ -143,8 +76,8 @@ function HomeOurCampus() {
                     justifyContent={"center"}
                     alignItems={"center"}
                   >
-                    <Typography variant={isMobile?"h6":"h3"}>{title}</Typography>
-                    <Typography fontSize={isMobile?"10px":null} textAlign={"justify"}>{content}</Typography>
+                    <Typography variant={isMobile?"h6":"h3"}>{name}</Typography>
+                    <Typography fontSize={isMobile?"10px":null} textAlign={"justify"}>{description,image}</Typography>
                   </Box>
                 </CardContent>
               </Card>

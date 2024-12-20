@@ -31,7 +31,7 @@ export async function createBranch(req: Request, res: Response) {
     let fileName = "";
     imageMiddleware(req, res, async (err) => {
       const { name, description } = req.body;
-
+      console.log(req.body)
       if (err) {
         console.error(err);
         return res.status(500).json({ error: err });

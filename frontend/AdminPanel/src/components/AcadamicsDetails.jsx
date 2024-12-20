@@ -8,11 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box, Button, Typography } from "@mui/material";
-import PopUpData from "./PopUpData";
 import Popup from "reactjs-popup";
 import axios from "axios";
 import FormPopUp from "./FormPopUp";
-import { name } from "ejs";
 
 const columns = [
   { id: "sno", label: "Sno", minWidth: 170 },
@@ -58,6 +56,8 @@ export default function AcadimicsDetails() {
 
   const createData = async (Data, Id) => {
     const formData = await new FormData();
+    console.log("logdata",Data)
+
     formData.append("name", Data.name);
     formData.append("description", Data.description);
     formData.append("image", Data.image);
@@ -67,6 +67,7 @@ export default function AcadimicsDetails() {
 
   const updateData = async (Data,id) => {
     const formData = await new FormData();
+    console.log("logdata",Data)
     formData.append("name", Data.name);
     formData.append("description", Data.description);
     formData.append("image", Data.image);
@@ -165,6 +166,7 @@ export default function AcadimicsDetails() {
                                   noChange={{ image, path }}
                                   index={id}
                                   update={updateData}
+                                  inputLabel={"image"}
                                 />
                               )}
                             </Popup>{" "}
