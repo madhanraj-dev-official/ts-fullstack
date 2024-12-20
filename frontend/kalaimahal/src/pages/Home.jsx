@@ -7,6 +7,7 @@ import HomeOurEvent from "../components/HomeOurEvents";
 import BigToSmallHeader from "../components/BigToSmallHeader";
 import Bg from "../assets/images/banner.png"
 import { TitleHook } from "../CustomHook/TitleHook";
+import HomeOurNews from "../components/HomeOurNews";
 
 export default function Home() {
   TitleHook("Home")
@@ -18,6 +19,7 @@ export default function Home() {
     <HomeOurFacility/>
     <HomeOurTestimonial/>
     <HomeAbout/>
+    <HomeOurNews/>
     <HomeOurEvent/>
     </>
   )
